@@ -20,13 +20,14 @@ public class MarkdownParse {
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
 
-            System.out.println("current index is: " + currentIndex);
+            System.out.println(currentIndex);
         }
         return toReturn;
     }
 
     public static void main(String[] args) throws IOException {
-        Path fileName = Path.of(args[0]);
+        String file = "test-file2.md";
+        Path fileName = Path.of(file);
         String contents = Files.readString(fileName);
         ArrayList<String> links = getLinks(contents);
         System.out.println(links);
