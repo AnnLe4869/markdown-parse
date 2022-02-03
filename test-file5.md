@@ -1,7 +1,3 @@
-# title
+# Title
 
-[stuff]
-
-paragraph
-
-(page.com)
+[ )

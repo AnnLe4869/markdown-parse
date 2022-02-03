@@ -4,26 +4,30 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.regex.Pattern;
 
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
+        Pattern pattern = Pattern.compile("(?<!!)\\[\\w+\\]\\((\\w+)\\)");
+
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
         int currentIndex = 0;
-        while (currentIndex < markdown.length()) {
+        while(currentIndex < markdown.length()) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
-
-            if (nextOpenBracket == -1) {
-                break;
+            if(nextOpenBracket == -1){
+                return null;
             }
-
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
+            if(openParen == -1){
+                return null;
+            }
             int closeParen = markdown.indexOf(")", openParen);
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
+            //System.out.println("Current Index: " + currentIndex);
         }
         return toReturn;
     }
