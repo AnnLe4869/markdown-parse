@@ -4,36 +4,34 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.regex.Pattern;
 
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
-        Pattern pattern = Pattern.compile("(?<!!)\\[\\w+\\]\\((\\w+)\\)");
 
         ArrayList<String> toReturn = new ArrayList<>();
         // find the next [, then find the ], then find the (, then take up to
         // the next )
         int currentIndex = 0;
-        while(currentIndex < markdown.length()) {
+        while (currentIndex < markdown.length()) {
             int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            if(nextOpenBracket == -1){
+            if (nextOpenBracket == -1) {
                 return null;
             }
             int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
             int openParen = markdown.indexOf("(", nextCloseBracket);
-            if(openParen == -1){
+            if (openParen == -1) {
                 return null;
             }
             int closeParen = markdown.indexOf(")", openParen);
             toReturn.add(markdown.substring(openParen + 1, closeParen));
             currentIndex = closeParen + 1;
-            //System.out.println("Current Index: " + currentIndex);
+            // System.out.println("Current Index: " + currentIndex);
         }
         return toReturn;
     }
 
     public static void main(String[] args) throws IOException {
-        String file = "test-file2.md";
+        String file = "test-file3.md";
         Path fileName = Path.of(file);
         String contents = Files.readString(fileName);
         ArrayList<String> links = getLinks(contents);
