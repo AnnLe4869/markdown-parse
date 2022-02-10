@@ -17,10 +17,7 @@ public class MarkdownParseTest {
 
     public static String getContentFromFile(String filePath) throws Exception {
         Path fileName = Path.of(filePath);
-
         String contents = Files.readString(fileName);
-
-
         return contents;
     }
 
@@ -29,8 +26,7 @@ public class MarkdownParseTest {
         try {
             String contents = getContentFromFile("test-file.md");
             ArrayList<String> links = MarkdownParse.getLinks(contents);
-            List<String> linksTest =
-                    List.of("https://something.com", "some-page.html");
+            List<String> linksTest = List.of("https://something.com", "some-page.html");
             assertEquals(linksTest, links);
         } catch (Exception e) {
 

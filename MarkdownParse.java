@@ -18,11 +18,20 @@ public class MarkdownParse {
         return toReturn;
     }
 
-    public static void main(String[] args) throws IOException {
-        String file = "test-file4.md";
-        Path fileName = Path.of(file);
+    public static String getContentFromFile(String filePath) throws Exception {
+        Path fileName = Path.of(filePath);
         String contents = Files.readString(fileName);
-        ArrayList<String> links = getLinks(contents);
-        System.out.println(links);
+        return contents;
+    }
+
+    public static void main(String[] args) throws IOException {
+        try {
+            String contents = getContentFromFile(args[0]);
+            ArrayList<String> links = getLinks(contents);
+            System.out.println(links);
+        } catch (Exception ex) {
+
+        }
+
     }
 }
