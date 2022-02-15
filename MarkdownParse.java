@@ -10,11 +10,18 @@ public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
 
         ArrayList<String> toReturn = new ArrayList<>();
-        Pattern pattern = Pattern.compile("(?<!!)\\[.+?\\]\\((\\S+?)\\)");
-        Matcher matchers = pattern.matcher(markdown);
-        for (int i = 0; matchers.find(); i++) {
-            toReturn.add(matchers.group(i));
+        Pattern pattern = Pattern.compile("(?<!!)\\[.+?\\]\\((\\S+?)\\)", Pattern.MULTILINE);
+        Matcher matcher = pattern.matcher(markdown);
+
+        while (matcher.find()) {
+            // System.out.println("Full match: " + matcher.group(0));
+
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                // System.out.println("Group " + i + ": " + matcher.group(i));
+                toReturn.add(matcher.group(i));
+            }
         }
+
         return toReturn;
     }
 
