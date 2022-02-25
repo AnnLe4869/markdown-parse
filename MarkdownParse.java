@@ -4,36 +4,28 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class MarkdownParse {
     public static ArrayList<String> getLinks(String markdown) {
-        Pattern pattern = Pattern.compile("(?<!!)\\[\\w+\\]\\((\\w+)\\)");
+        ArrayList<String> links = new ArrayList<String>();
+        final String regex = "(?<!!)(?<!`)\\[(?>[[a-zA-Z0-9 ]&&[^\\n]])+\\]\\((\\S+)\\)";
 
-        ArrayList<String> toReturn = new ArrayList<>();
-        // find the next [, then find the ], then find the (, then take up to
-        // the next )
-        int currentIndex = 0;
-        while(currentIndex < markdown.length()) {
-            int nextOpenBracket = markdown.indexOf("[", currentIndex);
-            if(nextOpenBracket == -1){
-                return null;
+        final Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
+        final Matcher matcher = pattern.matcher(markdown);
+
+        while (matcher.find()) {
+            for (int i = 1; i <= matcher.groupCount(); i++) {
+                links.add(matcher.group(i));
             }
-            int nextCloseBracket = markdown.indexOf("]", nextOpenBracket);
-            int openParen = markdown.indexOf("(", nextCloseBracket);
-            if(openParen == -1){
-                return null;
-            }
-            int closeParen = markdown.indexOf(")", openParen);
-            toReturn.add(markdown.substring(openParen + 1, closeParen));
-            currentIndex = closeParen + 1;
-            //System.out.println("Current Index: " + currentIndex);
         }
-        return toReturn;
+
+        return links;
     }
 
     public static void main(String[] args) throws IOException {
-        String file = "test-file2.md";
+        String file = "snippet1.md";
         Path fileName = Path.of(file);
         String contents = Files.readString(fileName);
         ArrayList<String> links = getLinks(contents);
