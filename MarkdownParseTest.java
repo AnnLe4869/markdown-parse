@@ -24,6 +24,7 @@ public class MarkdownParseTest {
             ArrayList<String> links = MarkdownParse.getLinks(contents);
             List<String> linksTest =
                     List.of("`google.com","google.com","ucsd.edu");
+
             assertEquals(linksTest, links);
         } catch (Exception e) {
 
